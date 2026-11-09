@@ -1,0 +1,312 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f8fafc">
+  <meta name="description" content="Cuenta palabras, caracteres, oraciones y párrafos al instante. Una herramienta gratis para estudiantes que quieren revisar y mejorar sus textos.">
+  <title>Contador de palabras online | Cuenta palabras y caracteres</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ["Inter", "ui-sans-serif", "system-ui", "sans-serif"]
+          },
+          colors: {
+            ink: "#172033",
+            muted: "#64748b",
+            brand: {
+              50: "#eff6ff",
+              100: "#dbeafe",
+              500: "#3b82f6",
+              600: "#2563eb",
+              700: "#1d4ed8"
+            }
+          },
+          boxShadow: {
+            soft: "0 18px 50px -24px rgba(15, 23, 42, .18)"
+          }
+        }
+      }
+    };
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: "DM Sans", ui-sans-serif, system-ui, sans-serif; }
+    h1, h2, h3 { font-family: "Manrope", ui-sans-serif, system-ui, sans-serif; }
+    textarea { field-sizing: content; }
+    @supports not (field-sizing: content) {
+      textarea { min-height: 260px; }
+    }
+    ::selection { background: #dbeafe; color: #172033; }
+  </style>
+</head>
+<body class="min-h-screen bg-slate-50 text-ink antialiased">
+  <header class="border-b border-slate-200/80 bg-white/80">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-5 py-4 sm:px-8">
+      <a href="#" class="inline-flex items-center gap-3" aria-label="Contador de palabras, inicio">
+        <span class="flex h-10 w-10 items-center justify-center rounded-xl bg-brand-600 text-white shadow-sm">
+          <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5">
+            <path d="M5 6.5h14M5 11.5h14M5 16.5h9" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+        </span>
+        <span class="text-base font-bold tracking-tight text-slate-900">CuentaTexto<span class="text-brand-600">.</span></span>
+      </a>
+      <span class="hidden items-center gap-2 rounded-full bg-emerald-50 px-3 py-1.5 text-xs font-semibold text-emerald-700 sm:inline-flex">
+        <span class="h-2 w-2 rounded-full bg-emerald-500"></span>
+        Gratis y sin registro
+      </span>
+    </div>
+  </header>
+
+  <main>
+    <section class="px-5 pb-12 pt-12 sm:px-8 sm:pt-16">
+      <div class="mx-auto max-w-4xl text-center">
+        <div class="mb-5 inline-flex items-center gap-2 rounded-full border border-brand-100 bg-white px-3.5 py-1.5 text-xs font-semibold text-brand-700 shadow-sm">
+          <svg aria-hidden="true" viewBox="0 0 20 20" fill="currentColor" class="h-4 w-4"><path d="M10 2.5a7.5 7.5 0 1 0 0 15 7.5 7.5 0 0 0 0-15Zm.75 3.25v4l2.5 1.5-.75 1.25-3.25-2V5.75h1.5Z"/></svg>
+          Tu texto, contado al instante
+        </div>
+        <h1 class="text-4xl font-extrabold leading-tight tracking-tight text-slate-950 sm:text-5xl">Las palabras cuentan.<br class="hidden sm:block"> <span class="text-brand-600">Nosotros las contamos.</span></h1>
+        <p class="mx-auto mt-5 max-w-2xl text-base leading-7 text-slate-600 sm:text-lg">
+          Pega o escribe tu texto y revisa sus datos en tiempo real. Ideal para ensayos, tareas, informes y cualquier trabajo de clase.
+        </p>
+      </div>
+    </section>
+
+    <section class="px-5 pb-16 sm:px-8" aria-label="Contador de texto">
+      <div class="mx-auto max-w-6xl">
+        <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-slate-600">Palabras</p>
+              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-blue-50 text-brand-600">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M4 7h16M4 12h16M4 17h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </span>
+            </div>
+            <p id="wordCount" class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950" aria-live="polite">0</p>
+            <p class="mt-1 text-xs text-slate-500">Separadas por espacios</p>
+          </article>
+          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-slate-600">Caracteres con espacios</p>
+              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-violet-50 text-violet-600">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M5 8h14M5 12h14M5 16h14M8 5v14m8-14v14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+              </span>
+            </div>
+            <p id="charCount" class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950" aria-live="polite">0</p>
+            <p class="mt-1 text-xs text-slate-500">Incluye espacios y saltos de línea</p>
+          </article>
+          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-slate-600">Caracteres sin espacios</p>
+              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-amber-50 text-amber-600">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M6 6h12M6 12h12M6 18h12" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+              </span>
+            </div>
+            <p id="charNoSpaceCount" class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950" aria-live="polite">0</p>
+            <p class="mt-1 text-xs text-slate-500">No cuenta espacios ni saltos</p>
+          </article>
+          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-slate-600">Oraciones</p>
+              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-rose-50 text-rose-600">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M6 5h12M6 9h9M6 13h12M6 17h7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="18" cy="17" r="1" fill="currentColor"/></svg>
+              </span>
+            </div>
+            <p id="sentenceCount" class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950" aria-live="polite">0</p>
+            <p class="mt-1 text-xs text-slate-500">Según la puntuación final</p>
+          </article>
+          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-slate-600">Párrafos</p>
+              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5"><path d="M5 6h14M5 10h14M5 14h10M5 18h10" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              </span>
+            </div>
+            <p id="paragraphCount" class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950" aria-live="polite">0</p>
+            <p class="mt-1 text-xs text-slate-500">Bloques separados por líneas vacías</p>
+          </article>
+          <article class="rounded-2xl border border-slate-200 bg-white p-5 shadow-soft">
+            <div class="flex items-center justify-between">
+              <p class="text-sm font-semibold text-slate-600">Tiempo de lectura</p>
+              <span class="flex h-9 w-9 items-center justify-center rounded-xl bg-cyan-50 text-cyan-700">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-5 w-5"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.8"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+            </div>
+            <p id="readingTime" class="mt-3 text-3xl font-extrabold tracking-tight text-slate-950" aria-live="polite">0 min</p>
+            <p class="mt-1 text-xs text-slate-500">A un ritmo de 200 palabras por minuto</p>
+          </article>
+        </div>
+
+        <div class="mt-6 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-soft">
+          <div class="flex flex-col gap-3 border-b border-slate-100 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-7">
+            <div>
+              <h2 class="text-base font-bold text-slate-900">Tu texto</h2>
+              <p class="mt-0.5 text-sm text-slate-500">Empieza a escribir o pega el contenido que quieras revisar.</p>
+            </div>
+            <div class="flex gap-2">
+              <button id="copyButton" type="button" class="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 transition hover:border-brand-200 hover:bg-brand-50 hover:text-brand-700 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-4 w-4"><rect x="8" y="8" width="11" height="13" rx="2" stroke="currentColor" stroke-width="1.8"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="1.8"/></svg>
+                <span>Copiar texto</span>
+              </button>
+              <button id="clearButton" type="button" class="inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-600 transition hover:border-rose-200 hover:bg-rose-50 hover:text-rose-700 focus:outline-none focus:ring-2 focus:ring-rose-400 focus:ring-offset-2">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" class="h-4 w-4"><path d="M4 7h16M10 11v6m4-6v6M6 7l1 13h10l1-13M9 7V4h6v3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <span>Limpiar</span>
+              </button>
+            </div>
+          </div>
+          <div class="p-3 sm:p-5">
+            <label for="textInput" class="sr-only">Escribe o pega tu texto aquí</label>
+            <textarea id="textInput" rows="10" spellcheck="true" placeholder="Escribe o pega aquí tu ensayo, tarea o cualquier texto…"
+              class="block min-h-[260px] w-full resize-y rounded-2xl border-0 bg-slate-50 px-5 py-4 text-base leading-7 text-slate-800 outline-none transition placeholder:text-slate-400 focus:bg-white focus:ring-2 focus:ring-brand-500/30"></textarea>
+          </div>
+          <div class="flex items-center justify-between border-t border-slate-100 px-5 py-3 text-xs text-slate-500 sm:px-7">
+            <span id="statusMessage" role="status" aria-live="polite">Tus estadísticas se actualizan automáticamente.</span>
+            <span id="textLength">0 caracteres</span>
+          </div>
+        </div>
+        <p class="mt-4 text-center text-xs text-slate-500">Tu texto se procesa en este navegador y no se envía a ningún servidor.</p>
+      </div>
+    </section>
+
+    <section class="border-t border-slate-200 bg-white px-5 py-16 sm:px-8">
+      <div class="mx-auto grid max-w-6xl gap-12 lg:grid-cols-[1fr_0.9fr]">
+        <div>
+          <div class="mb-3 text-sm font-bold uppercase tracking-wider text-brand-600">Una ayuda para tus estudios</div>
+          <h2 class="text-3xl font-extrabold tracking-tight text-slate-950">Revisa tu texto y entrega con confianza</h2>
+          <div class="mt-6 space-y-4 text-base leading-7 text-slate-600">
+            <p>Cuando preparas un ensayo, una respuesta o un informe, cumplir con la extensión solicitada es parte importante de la tarea. CuentaTexto te ayuda a comprobarlo sin distraerte: mira las palabras y los caracteres mientras escribes, y organiza mejor tus ideas con el recuento de oraciones y párrafos.</p>
+            <p>El tiempo de lectura es una estimación basada en un ritmo promedio de 200 palabras por minuto. Úsalo como orientación: la velocidad puede cambiar según la dificultad del tema y el lector.</p>
+          </div>
+          <div class="mt-7 rounded-2xl border border-brand-100 bg-brand-50 p-5">
+            <h3 class="font-bold text-slate-900">Un consejo antes de entregar</h3>
+            <p class="mt-2 text-sm leading-6 text-slate-600">Revisa las instrucciones de tu docente: algunas consignas cuentan títulos, citas o referencias y otras no. Este contador incluye todo el texto que pongas en la caja.</p>
+          </div>
+        </div>
+        <div>
+          <h2 class="text-2xl font-extrabold tracking-tight text-slate-950">Cómo usar el contador</h2>
+          <ol class="mt-6 space-y-5">
+            <li class="flex gap-4">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">1</span>
+              <div><h3 class="font-bold text-slate-900">Escribe o pega tu texto</h3><p class="mt-1 text-sm leading-6 text-slate-600">Usa el área de texto para empezar desde cero o copiar tu trabajo.</p></div>
+            </li>
+            <li class="flex gap-4">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">2</span>
+              <div><h3 class="font-bold text-slate-900">Consulta las estadísticas</h3><p class="mt-1 text-sm leading-6 text-slate-600">Los seis indicadores se actualizan al instante cada vez que editas el contenido.</p></div>
+            </li>
+            <li class="flex gap-4">
+              <span class="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-brand-600 text-sm font-bold text-white">3</span>
+              <div><h3 class="font-bold text-slate-900">Copia o empieza de nuevo</h3><p class="mt-1 text-sm leading-6 text-slate-600">Pulsa «Copiar texto» para llevarlo al portapapeles o «Limpiar» para borrar la caja.</p></div>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <section class="bg-slate-50 px-5 py-16 sm:px-8">
+      <div class="mx-auto max-w-3xl">
+        <div class="text-center">
+          <p class="text-sm font-bold uppercase tracking-wider text-brand-600">¿Tienes dudas?</p>
+          <h2 class="mt-2 text-3xl font-extrabold tracking-tight text-slate-950">Preguntas frecuentes</h2>
+        </div>
+        <div class="mt-8 divide-y divide-slate-200 rounded-2xl border border-slate-200 bg-white px-6">
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-bold text-slate-900">¿Cómo se cuentan las palabras?<span class="text-xl text-brand-600 transition group-open:rotate-45">+</span></summary>
+            <p class="mt-3 pr-7 text-sm leading-6 text-slate-600">Se considera palabra cada grupo de caracteres separado por uno o más espacios en blanco. La puntuación pegada a una palabra no se cuenta como una palabra aparte.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-bold text-slate-900">¿Qué diferencia hay entre caracteres con y sin espacios?<span class="text-xl text-brand-600 transition group-open:rotate-45">+</span></summary>
+            <p class="mt-3 pr-7 text-sm leading-6 text-slate-600">El recuento con espacios incluye cada carácter, también espacios y saltos de línea. El recuento sin espacios los excluye y muestra solo los demás caracteres.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-bold text-slate-900">¿Cómo se calcula el tiempo de lectura?<span class="text-xl text-brand-600 transition group-open:rotate-45">+</span></summary>
+            <p class="mt-3 pr-7 text-sm leading-6 text-slate-600">Se estima a partir de 200 palabras por minuto. Es una referencia aproximada, no una medida exacta, y el resultado mínimo para un texto breve es 1 minuto.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-bold text-slate-900">¿Se guarda o se comparte mi texto?<span class="text-xl text-brand-600 transition group-open:rotate-45">+</span></summary>
+            <p class="mt-3 pr-7 text-sm leading-6 text-slate-600">No. El conteo sucede directamente en tu navegador; el texto no se envía ni se guarda en un servidor.</p>
+          </details>
+          <details class="group py-5">
+            <summary class="flex cursor-pointer list-none items-center justify-between gap-4 font-bold text-slate-900">¿Puedo usarlo para revisar una tarea o ensayo?<span class="text-xl text-brand-600 transition group-open:rotate-45">+</span></summary>
+            <p class="mt-3 pr-7 text-sm leading-6 text-slate-600">Sí. Puedes comprobar la extensión de cualquier trabajo escolar. Recuerda seguir las indicaciones de tu docente sobre qué partes del documento deben incluirse en el conteo.</p>
+          </details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-slate-200 bg-white px-5 py-6 sm:px-8">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-2 text-sm text-slate-500 sm:flex-row">
+      <a href="#" class="font-bold text-slate-700">CuentaTexto<span class="text-brand-600">.</span></a>
+      <p>Una herramienta sencilla para ayudarte a estudiar mejor.</p>
+    </div>
+  </footer>
+
+  <script>
+    const textInput = document.getElementById("textInput");
+    const wordCount = document.getElementById("wordCount");
+    const charCount = document.getElementById("charCount");
+    const charNoSpaceCount = document.getElementById("charNoSpaceCount");
+    const sentenceCount = document.getElementById("sentenceCount");
+    const paragraphCount = document.getElementById("paragraphCount");
+    const readingTime = document.getElementById("readingTime");
+    const textLength = document.getElementById("textLength");
+    const statusMessage = document.getElementById("statusMessage");
+    const copyButton = document.getElementById("copyButton");
+    const clearButton = document.getElementById("clearButton");
+    const numberFormatter = new Intl.NumberFormat("es");
+
+    function countText() {
+      const text = textInput.value;
+      const trimmedText = text.trim();
+      const words = trimmedText ? trimmedText.split(/\s+/u) : [];
+      const sentences = trimmedText.match(/[^.!?]+[.!?]+|[^.!?]+$/gu) || [];
+      const paragraphs = trimmedText ? trimmedText.split(/\n(?:\s*\n)+/u).filter((paragraph) => paragraph.trim()) : [];
+      const minutes = words.length ? Math.max(1, Math.ceil(words.length / 200)) : 0;
+      const characters = Array.from(text).length;
+      const charactersWithoutWhitespace = Array.from(text.replace(/\s/gu, "")).length;
+
+      wordCount.textContent = numberFormatter.format(words.length);
+      charCount.textContent = numberFormatter.format(characters);
+      charNoSpaceCount.textContent = numberFormatter.format(charactersWithoutWhitespace);
+      sentenceCount.textContent = numberFormatter.format(sentences.length);
+      paragraphCount.textContent = numberFormatter.format(paragraphs.length);
+      readingTime.textContent = `${numberFormatter.format(minutes)} min`;
+      textLength.textContent = `${numberFormatter.format(characters)} ${characters === 1 ? "carácter" : "caracteres"}`;
+    }
+
+    textInput.addEventListener("input", countText);
+
+    copyButton.addEventListener("click", async () => {
+      const text = textInput.value;
+      if (!text) {
+        statusMessage.textContent = "No hay texto para copiar.";
+        return;
+      }
+
+      try {
+        await navigator.clipboard.writeText(text);
+        statusMessage.textContent = "Texto copiado al portapapeles.";
+      } catch (error) {
+        textInput.focus();
+        textInput.select();
+        const copied = document.execCommand("copy");
+        statusMessage.textContent = copied
+          ? "Texto copiado al portapapeles."
+          : "No se pudo copiar. Selecciona el texto y cópialo manualmente.";
+      }
+    });
+
+    clearButton.addEventListener("click", () => {
+      textInput.value = "";
+      countText();
+      statusMessage.textContent = "La caja de texto está limpia.";
+      textInput.focus();
+    });
+  </script>
+</body>
+</html>
